@@ -1,0 +1,6 @@
+season: 0
+
+biomeNames:
+  TAIGA:
+    ore: "RAW_IRON"
+    chance: 0.2

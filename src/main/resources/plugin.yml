@@ -1,0 +1,10 @@
+name: GEOPOLbiome
+version: '1.0-SNAPSHOT'
+main: me.mwns.gEOPOLbiome.GEOPOLbiome
+api-version: '1.20'
+depend:
+  - ["BiomesAPI"]
+
+
+
+

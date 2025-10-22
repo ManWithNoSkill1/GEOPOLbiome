@@ -16,7 +16,6 @@ import kotlin.random.Random
 
 class GEOPOLbiome : JavaPlugin(), Listener {
 
-    val playerTemp = mutableMapOf<UUID, Int>()
     var tempUpdate: BukkitTask? = null
     var season = 0
     var twentyDay2: Long? = -1L
@@ -45,15 +44,19 @@ class GEOPOLbiome : JavaPlugin(), Listener {
         tempUpdate = Bukkit.getScheduler().runTaskTimer(this, Runnable {
 
             val day = world?.fullTime?.div(24000)
-            val twentyDay1 = world?.fullTime?.div(24000)
             var seasonInt = config.getInt("season")
+
+            if (season == 0){
+                config.set("season", 1)
+                saveConfig()
+            }
 
             season = config.getInt("season")
 
-            if (day?.rem(20) == 0L) {
-                twentyDay2 = twentyDay1
+            if (day?.rem(20) == 0L && day != twentyDay2) {
+                twentyDay2 = day
 
-                if (season != 5 || season == 0){
+                if (season != 5){
                     seasonInt += 1
                     config.set("season", seasonInt)
                     saveConfig()
@@ -70,8 +73,6 @@ class GEOPOLbiome : JavaPlugin(), Listener {
                 }
             }
         }, 0L, 200L)
-
-
     }
 
     override fun onDisable() {
@@ -91,7 +92,6 @@ class GEOPOLbiome : JavaPlugin(), Listener {
     fun dayShower(event: PlayerJoinEvent) {
         val player = event.player
         val playerID = player.uniqueId
-        playerTemp[playerID] = 24
 
         val world = server.getWorld("world")
     }

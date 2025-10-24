@@ -9,6 +9,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.UUID
@@ -17,6 +18,7 @@ import kotlin.random.Random
 class GEOPOLbiome : JavaPlugin(), Listener {
 
     var tempUpdate: BukkitTask? = null
+    var tempUpdate2: BukkitTask? = null
     var season = 0
     var twentyDay2: Long? = -1L
 
@@ -37,7 +39,6 @@ class GEOPOLbiome : JavaPlugin(), Listener {
         logger.info("GeopolBiome Starting")
         server.pluginManager.registerEvents(this,this)
         server.pluginManager.registerEvents(StoneBreakDrop(), this)
-
 
         val world = server.getWorld("world")
 
@@ -73,7 +74,28 @@ class GEOPOLbiome : JavaPlugin(), Listener {
                 }
             }
         }, 0L, 200L)
+
+        tempUpdate2 = Bukkit.getScheduler().runTaskTimer(this, Runnable {
+
+            if (summer()) {
+                Bukkit.broadcastMessage("It is summer this text is from tempUpdate 2")
+            }
+            else if (autumn()) {
+                Bukkit.broadcastMessage("It is autumn this text is from tempUpdate 2")
+            }
+            else if (winter()) {
+                Bukkit.broadcastMessage("It is winter this text is from tempUpdate 2")
+            }
+            else if (spring()) {
+                Bukkit.broadcastMessage("It is spring this text is from tempUpdate 2")
+            }
+
+        },0L, 200L)
+
+
     }
+
+
 
     override fun onDisable() {
         logger.info("GeopolBiome shutting")
@@ -88,6 +110,27 @@ class GEOPOLbiome : JavaPlugin(), Listener {
         return true
     }
 
+    fun autumn(): Boolean {
+        if (season != 2) {
+            return false
+        }
+        return true
+    }
+
+    fun winter(): Boolean {
+        if (season != 3) {
+            return false
+        }
+        return true
+    }
+
+    fun spring(): Boolean {
+        if (season != 4) {
+            return false
+        }
+        return true
+    }
+
     @EventHandler
     fun dayShower(event: PlayerJoinEvent) {
         val player = event.player
@@ -95,5 +138,4 @@ class GEOPOLbiome : JavaPlugin(), Listener {
 
         val world = server.getWorld("world")
     }
-
 }

@@ -1,11 +1,15 @@
 package me.mwns.gEOPOLbiome
 
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.block.Biome
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.Potion
 import kotlin.random.Random
 
 class StoneBreakDrop : Listener {
@@ -14,7 +18,13 @@ class StoneBreakDrop : Listener {
     fun stoneBreak(event: BlockBreakEvent) {
         val chance = Random.nextDouble(0.01, 1.0)
         val block = event.block
+        val player = event.player
         val blockBiome = block.biome
+        val tool = player.itemInHand
+        val gamemode = player.gameMode
+        if (tool.enchantments == Enchantment.SILK_TOUCH || gamemode == GameMode.CREATIVE) {
+            return
+        }
 
         val plugin = GEOPOLbiome.instance
 
@@ -27,7 +37,7 @@ class StoneBreakDrop : Listener {
                     block.world.dropItem(block.location, ItemStack(Material.valueOf(ore.uppercase())))
                 }
                 else {
-                    block.world.dropItem(block.location, ItemStack(Material.STONE))
+                    block.world.dropItem(block.location, ItemStack(Material.COBBLESTONE))
                 }
             }
         }
